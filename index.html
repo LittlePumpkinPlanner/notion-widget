@@ -1,18 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather Widget</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="weather-widget">
-        <h2 id="city">Loading...</h2>
-        <p id="description"></p>
-        <p id="temperature"></p>
-        <p id="humidity"></p>
+<div class="weather-widget">
+    <input type="text" id="city-input" placeholder="Enter city" />
+    <button id="search-btn">Search</button>
+    <div id="weather-container">
+        <!-- Day 1 -->
+        <div class="day-forecast">
+            <h2 id="city">Loading...</h2>
+            <p id="day1-date"></p>
+            <p id="day1-description"></p>
+            <p id="day1-temperature"></p>
+            <p id="day1-humidity"></p>
+        </div>
+        <!-- Day 2 -->
+        <div class="day-forecast">
+            <p id="day2-date"></p>
+            <p id="day2-description"></p>
+            <p id="day2-temperature"></p>
+            <p id="day2-humidity"></p>
+        </div>
+        <!-- Day 3 -->
+        <div class="day-forecast">
+            <p id="day3-date"></p>
+            <p id="day3-description"></p>
+            <p id="day3-temperature"></p>
+            <p id="day3-humidity"></p>
+        </div>
     </div>
-    <script src="script.js"></script>
-</body>
-</html>
+</div>
+
