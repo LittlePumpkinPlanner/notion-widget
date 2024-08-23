@@ -15,7 +15,9 @@ body {
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    width: 300px;
+    width: 100%; /* Customizable width */
+    max-width: 400px;
+    overflow-y: auto; /* Scrollbar for overflow */
 }
 
 .weather-widget input {
@@ -36,10 +38,20 @@ body {
 .weather-widget h2 {
     margin: 0;
     font-size: 24px;
+    color: #f4d03f; /* Text color */
 }
 
 .weather-widget p {
     margin: 5px 0;
     font-size: 16px;
+    color: #f4d03f; /* Text color */
 }
 
+#current-weather {
+    background-color: #f0f0f0;
+    padding: 10px;
+}
+
+#forecast {
+    padding: 10px;
+}
