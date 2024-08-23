@@ -1,9 +1,10 @@
 const apiKey = '23240f8aea46c2c5957131817e1114b6';
 let city = 'London'; // Default city
+let unit = 'metric'; // Default unit for Celsius
 
 // Fetch weather data
-function fetchWeather(city) {
-    const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
+function fetchWeather(city, unit) {
+    const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=${unit}`;
 
     fetch(apiUrl)
         .then(response => response.json())
@@ -11,29 +12,32 @@ function fetchWeather(city) {
             // Update city name
             document.getElementById('city').textContent = data.city.name;
 
-            // Handle first day's forecast
-            const day1 = data.list[0];
-            document.getElementById('day1-date').textContent = new Date(day1.dt_txt).toLocaleDateString();
-            document.getElementById('day1-description').textContent = `Weather: ${day1.weather[0].description}`;
-            document.getElementById('day1-temperature').textContent = `Temperature: ${day1.main.temp}°C`;
-            document.getElementById('day1-humidity').textContent = `Humidity: ${day1.main.humidity}%`;
+            // Handle current day's forecast
+            const current = data.list[0];
+            document.getElementById('current-description').textContent = `Weather: ${current.weather[0].description}`;
+            document.getElementById('current-temperature').textContent = `Temperature: ${current.main.temp}°${unit === 'metric' ? 'C' : 'F'}`;
+            document.getElementById('current-humidity').textContent = `Humidity: ${current.main.humidity}%`;
 
-            // Handle second day's forecast
-            const day2 = data.list[8]; // 24 hours later
-            document.getElementById('day2-date').textContent = new Date(day2.dt_txt).toLocaleDateString();
-            document.getElementById('day2-description').textContent = `Weather: ${day2.weather[0].description}`;
-            document.getElementById('day2-temperature').textContent = `Temperature: ${day2.main.temp}°C`;
-            document.getElementById('day2-humidity').textContent = `Humidity: ${day2.main.humidity}%`;
+            // Change background based on current day's weather
+            changeBackground(current.weather[0].main);
 
-            // Handle third day's forecast
-            const day3 = data.list[16]; // 48 hours later
-            document.getElementById('day3-date').textContent = new Date(day3.dt_txt).toLocaleDateString();
-            document.getElementById('day3-description').textContent = `Weather: ${day3.weather[0].description}`;
-            document.getElementById('day3-temperature').textContent = `Temperature: ${day3.main.temp}°C`;
-            document.getElementById('day3-humidity').textContent = `Humidity: ${day3.main.humidity}%`;
+            // Clear old forecast
+            document.getElementById('forecast').innerHTML = '';
 
-            // Change background based on first day's weather
-            changeBackground(day1.weather[0].main);
+            // Handle 4-day forecast (skipping the first day already shown)
+            for (let i = 1; i <= 4; i++) {
+                const forecastData = data.list[i * 8];
+                const forecastElement = document.createElement('div');
+                forecastElement.className = 'day-forecast';
+
+                forecastElement.innerHTML = `
+                    <p>${new Date(forecastData.dt_txt).toLocaleDateString()}</p>
+                    <p>Weather: ${forecastData.weather[0].description}</p>
+                    <p>Temperature: ${forecastData.main.temp}°${unit === 'metric' ? 'C' : 'F'}</p>
+                    <p>Humidity: ${forecastData.main.humidity}%</p>
+                `;
+                document.getElementById('forecast').appendChild(forecastElement);
+            }
         })
         .catch(error => {
             console.error('Error fetching weather data:', error);
@@ -43,27 +47,29 @@ function fetchWeather(city) {
 
 // Change background based on weather
 function changeBackground(weather) {
-    const weatherContainer = document.getElementById('weather-container');
+    const currentWeather = document.getElementById('current-weather');
     if (weather.includes('Clear')) {
-        weatherContainer.style.backgroundImage = "url('sunny.jpg')";
+        currentWeather.style.backgroundImage = "url('sunny.jpg')";
     } else if (weather.includes('Rain')) {
-        weatherContainer.style.backgroundImage = "url('rainy.jpg')";
+        currentWeather.style.backgroundImage = "url('rainy.jpg')";
     } else if (weather.includes('Clouds')) {
-        weatherContainer.style.backgroundImage = "url('cloudy.jpg')";
+        currentWeather.style.backgroundImage = "url('cloudy.jpg')";
     } else {
-        weatherContainer.style.backgroundImage = "url('default.jpg')";
+        currentWeather.style.backgroundImage = "url('default.jpg')";
     }
 }
 
-// Handle user input for city change
+// Handle user input for city and unit change
 document.getElementById('search-btn').addEventListener('click', () => {
     const cityInput = document.getElementById('city-input').value;
+    const unit = prompt('Enter "metric" for Celsius or "imperial" for Fahrenheit:', 'metric');
     if (cityInput) {
-        fetchWeather(cityInput);
+        fetchWeather(cityInput, unit);
     } else {
         alert('Please enter a city name.');
     }
 });
 
 // Fetch initial weather data
-fetchWeather(city);
+fetchWeather(city, unit);
+
