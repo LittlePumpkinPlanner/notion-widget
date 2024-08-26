@@ -31,11 +31,8 @@ body {
     cursor: pointer;
 }
 
-.forecast-day i {
-    font-size: 24px; /* Adjust icon size */
-    color: black; /* Adjust icon color if needed */
-    margin: 0 10px; /* Space between icon and text */
-    vertical-align: middle; /* Align icon with text */
+.day-forecast {
+    margin-bottom: 20px;
 }
 
 .weather-widget h2 {
@@ -81,4 +78,12 @@ body {
 .forecast-day p {
     margin: 0;
     color: black !important; /* Force text color to black */
+}
+
+/* Ensure icons are displayed correctly */
+.forecast-day i {
+    font-size: 24px; /* Adjust icon size */
+    color: black; /* Adjust icon color if needed */
+    margin: 0 10px; /* Space between icon and text */
+    vertical-align: middle; /* Align icon with text */
 }
