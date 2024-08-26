@@ -24,9 +24,10 @@ function fetchWeather(city, unit) {
             // Clear old forecast
             document.getElementById('forecast').innerHTML = '';
 
-            // Handle 4-day forecast (skipping the first day already shown)
+            // Handle 4-day forecast
             for (let i = 1; i <= 4; i++) {
-                const forecastData = data.list[i * 8];
+                const forecastIndex = i * 8 - 1; // 3-hour intervals, pick the closest to next day
+                const forecastData = data.list[forecastIndex];
                 const forecastElement = document.createElement('div');
                 forecastElement.className = 'forecast-day';
 
@@ -76,5 +77,6 @@ document.getElementById('search-btn').addEventListener('click', () => {
 
 // Fetch initial weather data
 fetchWeather(city, unit);
+
 
 
