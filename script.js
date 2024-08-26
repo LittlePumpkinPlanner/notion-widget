@@ -12,11 +12,41 @@ function fetchWeather(city, unit) {
             // Update city name
             document.getElementById('city').textContent = data.city.name;
 
-            // Handle current day's forecast
-            const current = data.list[0];
-            document.getElementById('current-description').textContent = `Weather: ${current.weather[0].description}`;
-            document.getElementById('current-temperature').textContent = `Temperature: ${current.main.temp}°${unit === 'metric' ? 'C' : 'F'}`;
-            document.getElementById('current-humidity').textContent = `Humidity: ${current.main.humidity}%`;
+    // Mapping weather descriptions to icons
+    const weatherIcons = {
+        "clear sky": "fas fa-sun",
+        "few clouds": "fas fa-cloud-sun",
+        "scattered clouds": "fas fa-cloud",
+        "broken clouds": "fas fa-cloud",
+        "shower rain": "fas fa-cloud-showers-heavy",
+        "rain": "fas fa-cloud-rain",
+        "thunderstorm": "fas fa-bolt",
+        "snow": "fas fa-snowflake",
+        "mist": "fas fa-smog",
+        // Add other weather conditions as necessary
+    };
+    // Function to get the correct icon based on the weather description
+    function getWeatherIcon(description) {
+    return weatherIcons[description] || "fas fa-question"; // Default icon if description is not mapped
+    }
+
+    // Inserting the forecast data with icons
+    forecastData.list.forEach(forecastData => {
+    const forecastElement = document.createElement('div');
+    forecastElement.classList.add('forecast-day');
+    
+    // Use the getWeatherIcon function to get the icon class
+    const weatherIconClass = getWeatherIcon(forecastData.weather[0].description);
+    
+    forecastElement.innerHTML = `
+        <p>${new Date(forecastData.dt_txt).toLocaleDateString()}</p>
+        <i class="${weatherIconClass}"></i>  <!-- Display the icon here -->
+        <p>${forecastData.main.temp}°${unit === 'metric' ? 'C' : 'F'}</p> 
+    `;
+    
+    document.getElementById('forecast').appendChild(forecastElement);
+});
+
 
             // Change background and icon based on current day's weather
             changeBackgroundAndIcon(current.weather[0].main);
@@ -63,41 +93,6 @@ function changeBackgroundAndIcon(weather) {
         weatherIcon.src = 'default-icon.png';
     }
 }
-
-// Mapping weather descriptions to icons
-const weatherIcons = {
-    "clear sky": "fas fa-sun",
-    "few clouds": "fas fa-cloud-sun",
-    "scattered clouds": "fas fa-cloud",
-    "broken clouds": "fas fa-cloud",
-    "shower rain": "fas fa-cloud-showers-heavy",
-    "rain": "fas fa-cloud-rain",
-    "thunderstorm": "fas fa-bolt",
-    "snow": "fas fa-snowflake",
-    "mist": "fas fa-smog",
-    // Add other weather conditions as necessary
-};
-// Function to get the correct icon based on the weather description
-function getWeatherIcon(description) {
-    return weatherIcons[description] || "fas fa-question"; // Default icon if description is not mapped
-}
-
-// Inserting the forecast data with icons
-forecastData.list.forEach(forecastData => {
-    const forecastElement = document.createElement('div');
-    forecastElement.classList.add('forecast-day');
-    
-    // Use the getWeatherIcon function to get the icon class
-    const weatherIconClass = getWeatherIcon(forecastData.weather[0].description);
-    
-    forecastElement.innerHTML = `
-        <p>${new Date(forecastData.dt_txt).toLocaleDateString()}</p>
-        <i class="${weatherIconClass}"></i>  <!-- Display the icon here -->
-        <p>${forecastData.main.temp}°${unit === 'metric' ? 'C' : 'F'}</p> 
-    `;
-    
-    document.getElementById('forecast').appendChild(forecastElement);
-});
 
 // Handle user input for city and unit change
 document.getElementById('search-btn').addEventListener('click', () => {
