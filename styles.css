@@ -1,57 +1,57 @@
 /* styles.css */
-body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #f0f0f0;
+#weather-widget {
+  width: 300px;
+  font-family: Arial, sans-serif;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
-.weather-widget {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 100%; /* Customizable width */
-    max-width: 400px;
-    overflow-y: auto; /* Scrollbar for overflow */
+#current-day {
+  background-color: #2196F3; /* Default background color */
+  color: white;
+  padding: 20px;
+  text-align: center;
 }
 
-.weather-widget input {
-    width: calc(100% - 50px);
-    padding: 5px;
-    margin-bottom: 10px;
+#current-weather h2, #current-weather h3 {
+  margin: 5px 0;
 }
 
-.weather-widget button {
-    padding: 5px 10px;
-    cursor: pointer;
-}
-
-.day-forecast {
-    margin-bottom: 20px;
-}
-
-.weather-widget h2 {
-    margin: 0;
-    font-size: 24px;
-    color: #f4d03f; /* Text color */
-}
-
-.weather-widget p {
-    margin: 5px 0;
-    font-size: 16px;
-    color: #f4d03f; /* Text color */
-}
-
-#current-weather {
-    background-color: #f0f0f0;
-    padding: 10px;
+#current-weather img {
+  width: 50px;
+  height: 50px;
 }
 
 #forecast {
-    padding: 10px;
+  display: flex;
+  background-color: white;
+  color: black;
+}
+
+.day {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  border-right: 1px solid #ccc;
+}
+
+.day:last-child {
+  border-right: none;
+}
+
+.day-name {
+  display: block;
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+.icon {
+  width: 30px;
+  height: 30px;
+  margin-bottom: 5px;
+}
+
+.temp {
+  font-size: 14px;
 }
