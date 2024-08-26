@@ -4,20 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Widget</title>
-    <!-- Include FontAwesome for weather icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
+    <script src="https://kit.fontawesome.com/YOUR_FONTAWESOME_KIT.js" crossorigin="anonymous"></script> <!-- Make sure you have your FontAwesome Kit -->
 </head>
 <body>
     <div class="weather-widget">
         <input type="text" id="city-input" placeholder="Enter city">
         <button onclick="getWeather()">Search</button>
-        <div id="current-weather" class="day-forecast">
-            <!-- Current weather will be injected here -->
-        </div>
-        <div id="forecast">
-            <!-- 3-day forecast will be injected here -->
-        </div>
+        <div id="current-weather"></div>
+        <div id="forecast" class="forecast-container"></div>
     </div>
     <script src="script.js"></script>
 </body>
