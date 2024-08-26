@@ -1,34 +1,28 @@
-<div id="weather-widget">
-  <div id="current-day">
-    <div id="current-weather">
-      <h2 id="city">City Name</h2>
-      <h3 id="date">Monday, Aug 26</h3>
-      <div id="current-icon">
-        <img src="sunny.png" alt="Weather Icon">
-      </div>
-      <h1 id="current-temp">25°C</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Widget</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="weather-widget">
+        <input type="text" id="city-input" placeholder="Enter city" />
+        <button id="search-btn">Search</button>
+        <div id="weather-container">
+            <div id="current-weather" class="day-forecast">
+                <img id="weather-icon" src="" alt="Weather icon">
+                <h2 id="city">Loading...</h2>
+                <p id="current-description"></p>
+                <p id="current-temperature"></p>
+                <p id="current-humidity"></p>
+            </div>
+            <div id="forecast">
+                <!-- Dynamic 4-day forecast will be inserted here -->
+            </div>
+        </div>
     </div>
-  </div>
-  <div id="forecast">
-    <div class="day">
-      <span class="day-name">Tue</span>
-      <img src="cloudy.png" alt="Weather Icon" class="icon">
-      <span class="temp">22°C</span>
-    </div>
-    <div class="day">
-      <span class="day-name">Wed</span>
-      <img src="rainy.png" alt="Weather Icon" class="icon">
-      <span class="temp">18°C</span>
-    </div>
-    <div class="day">
-      <span class="day-name">Thu</span>
-      <img src="sunny.png" alt="Weather Icon" class="icon">
-      <span class="temp">24°C</span>
-    </div>
-    <div class="day">
-      <span class="day-name">Fri</span>
-      <img src="storm.png" alt="Weather Icon" class="icon">
-      <span class="temp">20°C</span>
-    </div>
-  </div>
-</div>
+    <script src="script.js"></script>
+</body>
+</html>
