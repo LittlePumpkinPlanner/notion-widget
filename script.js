@@ -1,81 +1,75 @@
-const weatherIcons = {
-    "clear sky": "fas fa-sun",
-    "few clouds": "fas fa-cloud-sun",
-    "scattered clouds": "fas fa-cloud",
-    "broken clouds": "fas fa-cloud",
-    "shower rain": "fas fa-cloud-showers-heavy",
-    "rain": "fas fa-cloud-rain",
-    "thunderstorm": "fas fa-bolt",
-    "snow": "fas fa-snowflake",
-    "mist": "fas fa-smog",
-};
+const apiKey = '23240f8aea46c2c5957131817e1114b6';
+let city = 'London'; // Default city
+let unit = 'metric'; // Default unit for Celsius
 
-const backgroundColors = {
-    "clear sky": "#f7b733",
-    "few clouds": "#f5af19",
-    "scattered clouds": "#2193b0",
-    "broken clouds": "#6dd5ed",
-    "shower rain": "#4e54c8",
-    "rain": "#4b79a1",
-    "thunderstorm": "#2c3e50",
-    "snow": "#bdc3c7",
-    "mist": "#e0eafc",
-};
+// Fetch weather data
+function fetchWeather(city, unit) {
+    const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=${unit}`;
 
-function getWeatherIcon(description) {
-    return weatherIcons[description] || "fas fa-question";
-}
-
-function getBackgroundColor(description) {
-    return backgroundColors[description] || "#333";
-}
-
-function getWeather() {
-    const city = document.getElementById('city-input').value;
-    const unit = 'metric'; // 'metric' for Celsius, 'imperial' for Fahrenheit
-
-    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=${unit}&appid=23240f8aea46c2c5957131817e1114b6`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('City not found');
-            }
-            return response.json();
-        })
+    fetch(apiUrl)
+        .then(response => response.json())
         .then(data => {
-            const currentWeather = data.list[0];
-            const weatherElement = document.getElementById('current-weather');
-            const weatherIconClass = getWeatherIcon(currentWeather.weather[0].description);
-            const backgroundColor = getBackgroundColor(currentWeather.weather[0].description);
+            // Update city name
+            document.getElementById('city').textContent = data.city.name;
 
-            weatherElement.innerHTML = `
-                <i class="${weatherIconClass}" style="font-size: 48px;"></i>
-                <h2>${data.city.name}</h2>
-                <p>Weather: ${currentWeather.weather[0].description}</p>
-                <p>Temperature: ${currentWeather.main.temp}°${unit === 'metric' ? 'C' : 'F'}</p>
-                <p>Humidity: ${currentWeather.main.humidity}%</p>
-            `;
-            weatherElement.style.backgroundColor = backgroundColor;
+            // Handle current day's forecast
+            const current = data.list[0];
+            document.getElementById('current-description').textContent = `Weather: ${current.weather[0].description}`;
+            document.getElementById('current-temperature').textContent = `Temperature: ${current.main.temp}°${unit === 'metric' ? 'C' : 'F'}`;
+            document.getElementById('current-humidity').textContent = `Humidity: ${current.main.humidity}%`;
 
-            const forecastElement = document.getElementById('forecast');
-            forecastElement.innerHTML = ''; // Clear previous forecast
+            // Change background and icon based on current day's weather
+            changeBackgroundAndIcon(current.weather[0].main);
 
-            for (let i = 0; i < 4; i++) { // Loop adjusted for 4-day forecast
-                const forecastData = data.list[i * 8]; // Every 8th index represents the next day
-                const forecastIconClass = getWeatherIcon(forecastData.weather[0].description);
+            // Clear old forecast
+            document.getElementById('forecast').innerHTML = '';
 
-                const forecastDay = document.createElement('div');
-                forecastDay.classList.add('forecast-day');
-                forecastDay.innerHTML = `
+            // Handle 4-day forecast
+            for (let i = 1; i <= 4; i++) {
+                const forecastIndex = i * 8 - 1; // 3-hour intervals, pick the closest to next day
+                const forecastData = data.list[forecastIndex];
+                const forecastElement = document.createElement('div');
+                forecastElement.className = 'forecast-day';
+
+                forecastElement.innerHTML = `
                     <p>${new Date(forecastData.dt_txt).toLocaleDateString()}</p>
-                    <i class="${forecastIconClass}"></i>
-                    <p>${forecastData.main.temp}°${unit === 'metric' ? 'C' : 'F'}</p> 
+                    <p>${forecastData.weather[0].description}</p>
+                    <p>${forecastData.main.temp}°${unit === 'metric' ? 'C' : 'F'}</p>
                 `;
-                forecastElement.appendChild(forecastDay);
+                document.getElementById('forecast').appendChild(forecastElement);
             }
         })
         .catch(error => {
-            console.error('Error fetching the weather data:', error);
-            document.getElementById('current-weather').innerHTML = `<p style="color:red;">Error: ${error.message}</p>`;
-            document.getElementById('forecast').innerHTML = ''; // Clear the forecast
+            console.error('Error fetching weather data:', error);
+            alert('Could not retrieve weather data. Please check your API key and city name.');
         });
 }
+
+// Change background and icon based on weather
+function changeBackgroundAndIcon(weather) {
+    const currentWeather = document.getElementById('current-weather');
+    const weatherIcon = document.getElementById('weather-icon');
+    if (weather.includes('Clear')) {
+        currentWeather.style.backgroundImage = "url('sunny.jpg')"; 
+    } else if (weather.includes('Rain')) {
+        currentWeather.style.backgroundImage = "url('rainy.jpg')";    
+    } else if (weather.includes('Clouds')) {
+        currentWeather.style.backgroundImage = "url('cloudy.jpg')";      
+    } else {
+        currentWeather.style.backgroundImage = "url('default.jpg')";
+    }
+}
+
+// Handle user input for city and unit change
+document.getElementById('search-btn').addEventListener('click', () => {
+    const cityInput = document.getElementById('city-input').value;
+    const unit = prompt('Enter "metric" for Celsius or "imperial" for Fahrenheit:', 'metric');
+    if (cityInput) {
+        fetchWeather(cityInput, unit);
+    } else {
+        alert('Please enter a city name.');
+    }
+});
+
+// Fetch initial weather data
+fetchWeather(city, unit);
