@@ -31,9 +31,9 @@ body {
     cursor: pointer;
 }
 
-.forecast-day img {
-    width: 24px; /* Adjust icon size */
-    height: 24px; /* Adjust icon size */
+.forecast-day i {
+    font-size: 24px; /* Adjust icon size */
+    color: black; /* Adjust icon color if needed */
     margin: 0 10px; /* Space between icon and text */
     vertical-align: middle; /* Align icon with text */
 }
