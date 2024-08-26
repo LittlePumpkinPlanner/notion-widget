@@ -1,6 +1,6 @@
 // script.js
 
-// Mapping weather descriptions to icons
+// Mapping weather descriptions to FontAwesome icons
 const weatherIcons = {
     "clear sky": "fas fa-sun",
     "few clouds": "fas fa-cloud-sun",
@@ -21,10 +21,15 @@ function getWeatherIcon(description) {
 
 function getWeather() {
     const city = document.getElementById('city-input').value;
-    const unit = 'metric'; // or 'imperial' for Fahrenheit
+    const unit = 'metric'; // 'metric' for Celsius, 'imperial' for Fahrenheit
 
     fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=${unit}&appid=23240f8aea46c2c5957131817e1114b6`)
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('City not found');
+            }
+            return response.json();
+        })
         .then(data => {
             const currentWeather = data.list[0];
             const weatherElement = document.getElementById('current-weather');
@@ -41,26 +46,25 @@ function getWeather() {
             const forecastElement = document.getElementById('forecast');
             forecastElement.innerHTML = ''; // Clear previous forecast
 
-            data.list.forEach((forecastData, index) => {
-                if (index % 8 === 0) { // Show forecast for every 24 hours
-                    const forecastDay = document.createElement('div');
-                    forecastDay.classList.add('forecast-day');
-                    const weatherIconClass = getWeatherIcon(forecastData.weather[0].description);
+            // Loop through the forecast and display 3-day forecast
+            for (let i = 0; i < 3; i++) {
+                const forecastData = data.list[i * 8]; // Every 8th index represents the next day
+                const weatherIconClass = getWeatherIcon(forecastData.weather[0].description);
 
-                    forecastDay.innerHTML = `
-                        <p>${new Date(forecastData.dt_txt).toLocaleDateString()}</p>
-                        <i class="${weatherIconClass}"></i>
-                        <p>${forecastData.main.temp}°${unit === 'metric' ? 'C' : 'F'}</p> 
-                    `;
-                    forecastElement.appendChild(forecastDay);
-                }
-            });
+                const forecastDay = document.createElement('div');
+                forecastDay.classList.add('forecast-day');
+                forecastDay.innerHTML = `
+                    <p>${new Date(forecastData.dt_txt).toLocaleDateString()}</p>
+                    <i class="${weatherIconClass}"></i>
+                    <p>${forecastData.main.temp}°${unit === 'metric' ? 'C' : 'F'}</p> 
+                `;
+                forecastElement.appendChild(forecastDay);
+            }
         })
         .catch(error => {
             console.error('Error fetching the weather data:', error);
+            document.getElementById('current-weather').innerHTML = `<p style="color:red;">Error: ${error.message}</p>`;
+            document.getElementById('forecast').innerHTML = ''; // Clear the forecast
         });
 }
-
-
-
 
