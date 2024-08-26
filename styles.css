@@ -1,4 +1,4 @@
-/* styles.css */
+/* General Styles */
 body {
     font-family: Arial, sans-serif;
     display: flex;
@@ -15,9 +15,9 @@ body {
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    width: 100%; /* Customizable width */
+    width: 100%;
     max-width: 400px;
-    overflow-y: auto; /* Scrollbar for overflow */
+    overflow-y: auto;
 }
 
 .weather-widget input {
@@ -50,7 +50,7 @@ body {
 #current-weather {
     background-color: #f0f0f0;
     padding: 10px;
-    color: #ffffff; /* Ensures text is white in upper part */
+    color: #ffffff;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -80,7 +80,6 @@ body {
     color: black !important; /* Force text color to black */
 }
 
-/* Ensure icons are displayed correctly */
 .forecast-day i {
     font-size: 24px; /* Adjust icon size */
     color: black; /* Adjust icon color if needed */
