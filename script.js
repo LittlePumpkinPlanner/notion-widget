@@ -1,75 +1,36 @@
 const apiKey = '23240f8aea46c2c5957131817e1114b6';
-let city = 'London'; // Default city
-let unit = 'metric'; // Default unit for Celsius
+let currentCity = 'Kyiv';
+let isCelsius = true;
 
-// Fetch weather data
-function fetchWeather(city, unit) {
-    const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=${unit}`;
-
-    fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-            // Update city name
-            document.getElementById('city').textContent = data.city.name;
-
-            // Handle current day's forecast
-            const current = data.list[0];
-            document.getElementById('current-description').textContent = `Weather: ${current.weather[0].description}`;
-            document.getElementById('current-temperature').textContent = `Temperature: ${current.main.temp}°${unit === 'metric' ? 'C' : 'F'}`;
-            document.getElementById('current-humidity').textContent = `Humidity: ${current.main.humidity}%`;
-
-            // Change background based on current day's weather
-            changeBackground(current.weather[0].main);
-
-            // Clear old forecast
-            document.getElementById('forecast').innerHTML = '';
-
-            // Handle 4-day forecast (skipping the first day already shown)
-            for (let i = 1; i <= 4; i++) {
-                const forecastData = data.list[i * 8];
-                const forecastElement = document.createElement('div');
-                forecastElement.className = 'day-forecast';
-
-                forecastElement.innerHTML = `
-                    <p>${new Date(forecastData.dt_txt).toLocaleDateString()}</p>
-                    <p>Weather: ${forecastData.weather[0].description}</p>
-                    <p>Temperature: ${forecastData.main.temp}°${unit === 'metric' ? 'C' : 'F'}</p>
-                    <p>Humidity: ${forecastData.main.humidity}%</p>
-                `;
-                document.getElementById('forecast').appendChild(forecastElement);
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching weather data:', error);
-            alert('Could not retrieve weather data. Please check your API key and city name.');
-        });
+function fetchWeather(city) {
+  fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${apiKey}`)
+    .then(response => response.json())
+    .then(data => updateWidget(data));
 }
 
-// Change background based on weather
-function changeBackground(weather) {
-    const currentWeather = document.getElementById('current-weather');
-    if (weather.includes('Clear')) {
-        currentWeather.style.backgroundImage = "url('sunny.jpg')";
-    } else if (weather.includes('Rain')) {
-        currentWeather.style.backgroundImage = "url('rainy.jpg')";
-    } else if (weather.includes('Clouds')) {
-        currentWeather.style.backgroundImage = "url('cloudy.jpg')";
-    } else {
-        currentWeather.style.backgroundImage = "url('default.jpg')";
-    }
+function updateWidget(data) {
+  const currentWeather = data.list[0];
+  const forecast = data.list.slice(1, 5);
+  
+  document.getElementById('city').textContent = data.city.name;
+  document.getElementById('date').textContent = new Date(currentWeather.dt * 1000).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+  document.getElementById('current-temp').textContent = `${Math.round(currentWeather.main.temp)}°${isCelsius ? 'C' : 'F'}`;
+  
+  document.getElementById('current-icon').querySelector('img').src = `icons/${currentWeather.weather[0].icon}.png`;
+
+  const days = document.querySelectorAll('.day');
+  forecast.forEach((day, index) => {
+    days[index].querySelector('.day-name').textContent = new Date(day.dt * 1000).toLocaleDateString('en-US', { weekday: 'short' });
+    days[index].querySelector('.icon').src = `icons/${day.weather[0].icon}.png`;
+    days[index].querySelector('.temp').textContent = `${Math.round(day.main.temp)}°${isCelsius ? 'C' : 'F'}`;
+  });
 }
 
-// Handle user input for city and unit change
-document.getElementById('search-btn').addEventListener('click', () => {
-    const cityInput = document.getElementById('city-input').value;
-    const unit = prompt('Enter "metric" for Celsius or "imperial" for Fahrenheit:', 'metric');
-    if (cityInput) {
-        fetchWeather(cityInput, unit);
-    } else {
-        alert('Please enter a city name.');
-    }
+document.getElementById('weather-widget').addEventListener('click', () => {
+  isCelsius = !isCelsius;
+  fetchWeather(currentCity);
 });
 
-// Fetch initial weather data
-fetchWeather(city, unit);
+fetchWeather(currentCity);
+
 
