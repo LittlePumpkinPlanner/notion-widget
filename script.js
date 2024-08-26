@@ -33,7 +33,6 @@ function fetchWeather(city, unit) {
 
                 forecastElement.innerHTML = `
                     <p>${new Date(forecastData.dt_txt).toLocaleDateString()}</p>
-                    <p>${forecastData.weather[0].description}</p>
                     <p>${forecastData.main.temp}°${unit === 'metric' ? 'C' : 'F'}</p>
                 `;
                 document.getElementById('forecast').appendChild(forecastElement);
