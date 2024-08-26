@@ -65,17 +65,17 @@ body {
 #forecast {
     padding: 10px;
     background-color: white; /* Background for the bottom part */
-    color: black; /* Set font color to black for the bottom part */
+    color: black !important; /* Force font color to black */
 }
 
 .forecast-day {
     display: flex;
     justify-content: space-between;
     margin-bottom: 10px;
-    color: black; /* Font color for the bottom part */
+    color: black !important; /* Force font color to black */
 }
 
 .forecast-day p {
     margin: 0;
-    color: black; /* Ensure text color is black */
+    color: black !important; /* Force text color to black */
 }
