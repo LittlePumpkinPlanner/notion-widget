@@ -11,11 +11,11 @@ const weatherIcons = {
     "thunderstorm": "fas fa-bolt",
     "snow": "fas fa-snowflake",
     "mist": "fas fa-smog",
-    // Add other weather conditions as necessary
 };
 
 // Function to get the correct icon based on the weather description
 function getWeatherIcon(description) {
+    console.log('Weather description:', description); // Debugging line
     return weatherIcons[description] || "fas fa-question"; // Default icon if description is not mapped
 }
 
@@ -31,6 +31,7 @@ function getWeather() {
             return response.json();
         })
         .then(data => {
+            console.log('API Response:', data); // Debugging line
             const currentWeather = data.list[0];
             const weatherElement = document.getElementById('current-weather');
             const weatherIconClass = getWeatherIcon(currentWeather.weather[0].description);
@@ -51,6 +52,8 @@ function getWeather() {
                 const forecastData = data.list[i * 8]; // Every 8th index represents the next day
                 const weatherIconClass = getWeatherIcon(forecastData.weather[0].description);
 
+                console.log('Forecast Data:', forecastData); // Debugging line
+
                 const forecastDay = document.createElement('div');
                 forecastDay.classList.add('forecast-day');
                 forecastDay.innerHTML = `
@@ -67,4 +70,3 @@ function getWeather() {
             document.getElementById('forecast').innerHTML = ''; // Clear the forecast
         });
 }
-
