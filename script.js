@@ -1,6 +1,3 @@
-// script.js
-
-// Mapping weather descriptions to FontAwesome icons
 const weatherIcons = {
     "clear sky": "fas fa-sun",
     "few clouds": "fas fa-cloud-sun",
@@ -13,10 +10,24 @@ const weatherIcons = {
     "mist": "fas fa-smog",
 };
 
-// Function to get the correct icon based on the weather description
+const backgroundColors = {
+    "clear sky": "#f7b733",
+    "few clouds": "#f5af19",
+    "scattered clouds": "#2193b0",
+    "broken clouds": "#6dd5ed",
+    "shower rain": "#4e54c8",
+    "rain": "#4b79a1",
+    "thunderstorm": "#2c3e50",
+    "snow": "#bdc3c7",
+    "mist": "#e0eafc",
+};
+
 function getWeatherIcon(description) {
-    console.log('Weather description:', description); // Debugging line
-    return weatherIcons[description] || "fas fa-question"; // Default icon if description is not mapped
+    return weatherIcons[description] || "fas fa-question";
+}
+
+function getBackgroundColor(description) {
+    return backgroundColors[description] || "#333";
 }
 
 function getWeather() {
@@ -31,34 +42,32 @@ function getWeather() {
             return response.json();
         })
         .then(data => {
-            console.log('API Response:', data); // Debugging line
             const currentWeather = data.list[0];
             const weatherElement = document.getElementById('current-weather');
             const weatherIconClass = getWeatherIcon(currentWeather.weather[0].description);
+            const backgroundColor = getBackgroundColor(currentWeather.weather[0].description);
 
             weatherElement.innerHTML = `
-                <i class="${weatherIconClass}"></i>
+                <i class="${weatherIconClass}" style="font-size: 48px;"></i>
                 <h2>${data.city.name}</h2>
                 <p>Weather: ${currentWeather.weather[0].description}</p>
                 <p>Temperature: ${currentWeather.main.temp}°${unit === 'metric' ? 'C' : 'F'}</p>
                 <p>Humidity: ${currentWeather.main.humidity}%</p>
             `;
+            weatherElement.style.backgroundColor = backgroundColor;
 
             const forecastElement = document.getElementById('forecast');
             forecastElement.innerHTML = ''; // Clear previous forecast
 
-            // Loop through the forecast and display 3-day forecast
-            for (let i = 0; i < 3; i++) {
+            for (let i = 0; i < 4; i++) { // Loop adjusted for 4-day forecast
                 const forecastData = data.list[i * 8]; // Every 8th index represents the next day
-                const weatherIconClass = getWeatherIcon(forecastData.weather[0].description);
-
-                console.log('Forecast Data:', forecastData); // Debugging line
+                const forecastIconClass = getWeatherIcon(forecastData.weather[0].description);
 
                 const forecastDay = document.createElement('div');
                 forecastDay.classList.add('forecast-day');
                 forecastDay.innerHTML = `
                     <p>${new Date(forecastData.dt_txt).toLocaleDateString()}</p>
-                    <i class="${weatherIconClass}"></i>
+                    <i class="${forecastIconClass}"></i>
                     <p>${forecastData.main.temp}°${unit === 'metric' ? 'C' : 'F'}</p> 
                 `;
                 forecastElement.appendChild(forecastDay);
