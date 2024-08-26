@@ -4,25 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Widget</title>
-    <!-- Include FontAwesome CDN -->
+    <!-- Include FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="weather-widget">
-        <input type="text" id="city-input" placeholder="Enter city" />
-        <button id="search-btn">Search</button>
-        <div id="weather-container">
-            <div id="current-weather" class="day-forecast">
-                <img id="weather-icon" src="" alt="Weather icon">
-                <h2 id="city">Loading...</h2>
-                <p id="current-description"></p>
-                <p id="current-temperature"></p>
-                <p id="current-humidity"></p>
-            </div>
-            <div id="forecast">
-                <!-- Dynamic 4-day forecast will be inserted here -->
-            </div>
+        <input type="text" id="city-input" placeholder="Enter city">
+        <button onclick="getWeather()">Search</button>
+        <div id="current-weather" class="day-forecast">
+            <!-- Current weather will be injected here -->
+        </div>
+        <div id="forecast">
+            <!-- Forecast will be injected here -->
         </div>
     </div>
     <script src="script.js"></script>
