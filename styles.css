@@ -31,8 +31,11 @@ body {
     cursor: pointer;
 }
 
-.day-forecast {
-    margin-bottom: 20px;
+.forecast-day img {
+    width: 24px; /* Adjust icon size */
+    height: 24px; /* Adjust icon size */
+    margin: 0 10px; /* Space between icon and text */
+    vertical-align: middle; /* Align icon with text */
 }
 
 .weather-widget h2 {
