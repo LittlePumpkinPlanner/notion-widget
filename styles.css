@@ -71,7 +71,7 @@ body {
     display: flex;
     justify-content: space-between;
     margin-bottom: 10px;
-    color: black; /* Font color for the bottom part */
+    color: #212f3d; /* Font color for the bottom part */
 }
 
 .forecast-day p {
