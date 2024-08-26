@@ -5,14 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Widget</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://kit.fontawesome.com/YOUR_FONTAWESOME_KIT.js" crossorigin="anonymous"></script> <!-- Make sure you have your FontAwesome Kit -->
 </head>
 <body>
     <div class="weather-widget">
-        <input type="text" id="city-input" placeholder="Enter city">
-        <button onclick="getWeather()">Search</button>
-        <div id="current-weather"></div>
-        <div id="forecast" class="forecast-container"></div>
+        <input type="text" id="city-input" placeholder="Enter city" />
+        <button id="search-btn">Search</button>
+        <div id="weather-container">
+            <div id="current-weather" class="day-forecast">
+                <img id="weather-icon" src="" alt="Weather icon">
+                <h2 id="city">Loading...</h2>
+                <p id="current-description"></p>
+                <p id="current-temperature"></p>
+                <p id="current-humidity"></p>
+            </div>
+            <div id="forecast">
+                <!-- Dynamic 4-day forecast will be inserted here -->
+            </div>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
