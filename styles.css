@@ -1,57 +1,79 @@
 /* styles.css */
-#weather-widget {
-  width: 300px;
-  font-family: Arial, sans-serif;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  overflow: hidden;
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
 }
 
-#current-day {
-  background-color: #2196F3; /* Default background color */
-  color: white;
-  padding: 20px;
-  text-align: center;
+.weather-widget {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 100%; /* Customizable width */
+    max-width: 400px;
+    overflow-y: auto; /* Scrollbar for overflow */
 }
 
-#current-weather h2, #current-weather h3 {
-  margin: 5px 0;
+.weather-widget input {
+    width: calc(100% - 50px);
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+.weather-widget button {
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.day-forecast {
+    margin-bottom: 20px;
+}
+
+.weather-widget h2 {
+    margin: 0;
+    font-size: 24px;
+    color: #ffffff; /* Font color for upper part */
+}
+
+.weather-widget p {
+    margin: 5px 0;
+    font-size: 16px;
+    color: #ffffff; /* Font color for upper part */
+}
+
+#current-weather {
+    background-color: #f0f0f0;
+    padding: 10px;
+    color: #ffffff; /* Ensures text is white in upper part */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #current-weather img {
-  width: 50px;
-  height: 50px;
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
 }
 
 #forecast {
-  display: flex;
-  background-color: white;
-  color: black;
+    padding: 10px;
+    background-color: white; /* Background for the bottom part */
 }
 
-.day {
-  flex: 1;
-  text-align: center;
-  padding: 10px;
-  border-right: 1px solid #ccc;
+.forecast-day {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    color: black; /* Font color for the bottom part */
 }
 
-.day:last-child {
-  border-right: none;
-}
-
-.day-name {
-  display: block;
-  font-size: 12px;
-  margin-bottom: 5px;
-}
-
-.icon {
-  width: 30px;
-  height: 30px;
-  margin-bottom: 5px;
-}
-
-.temp {
-  font-size: 14px;
+.forecast-day p {
+    margin: 0;
 }
