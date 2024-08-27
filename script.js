@@ -53,7 +53,9 @@ function changeBackgroundAndIcon(weather) {
     } else if (weather.includes('Rain')) {
         currentWeather.style.backgroundImage = "url('rainy.jpg')";    
     } else if (weather.includes('Clouds')) {
-        currentWeather.style.backgroundImage = "url('cloudy.jpg')";      
+        currentWeather.style.backgroundImage = "url('cloudy.jpg')";
+    } else if (weather.includes('Snow')) {
+        currentWeather.style.backgroundImage = "url('snowie.jpg')";
     } else {
         currentWeather.style.backgroundImage = "url('default.jpg')";
     }
